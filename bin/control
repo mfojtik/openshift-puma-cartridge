@@ -15,13 +15,18 @@ function start() {
 }
 
 function stop() {
+    check_state_file
     echo "Stopping Puma cart"
     pumactl --state "${OPENSHIFT_PUMA_DIR}/run/puma.state" stop
 }
 
 function restart() {
     echo "Restarting Puma cart"
-    pumactl --state "${OPENSHIFT_PUMA_DIR}/run/puma.state" restart
+    if [ ! -f ${OPENSHIFT_PUMA_DIR}/run/puma.state ]; then
+      start
+    else
+      pumactl --state "${OPENSHIFT_PUMA_DIR}/run/puma.state" restart
+    fi
 }
 
 function status() {
@@ -36,6 +41,13 @@ function status() {
 function reload() {
     client_result "Reloading Puma cart"
     restart
+}
+
+function check_state_file() {
+    if [ ! -f ${OPENSHIFT_PUMA_DIR}/run/puma.state ]; then
+      client_message 'Puma cartridge is not running...'
+      exit 0
+    fi
 }
 
 function tidy() {
