@@ -1,0 +1,19 @@
+#!/bin/bash -eu
+
+source $OPENSHIFT_CARTRIDGE_SDK_BASH
+
+case "$1" in
+  -v|--version)
+    version="$2"
+esac
+
+mkdir -p $OPENSHIFT_PUMA_DIR/{logs,run,config}
+
+gem install puma --no-rdoc --no-ri --conservative &> ${OPENSHIFT_PUMA_DIR}/logs/install.log
+
+if [ "$?" == "0" ]; then
+  client_result "Puma cartridge succesfully installed."
+else
+  client_result "Puma cartridge failed to install:"
+  client_result `cat ${OPENSHIFT_PUMA_DIR}/logs/install.log`
+fi

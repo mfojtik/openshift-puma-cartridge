@@ -1,0 +1,54 @@
+Name: puma
+Cartridge-Short-Name: PUMA
+Display-Name: Puma 0.1
+Description: "A Modern, Concurrent Web Server for Ruby"
+Version: '0.1'
+License: "ASL 2.0"
+License-Url: https://raw.github.com/puma/puma/master/LICENSE
+Cartridge-Version: 0.0.1
+Cartridge-Vendor: mfojtik
+Vendor: mfojtik
+Categories:
+  - web_framework
+  - experimental
+Website:
+Cart-Data:
+  - Key: OPENSHIFT_PUMA_MIN_THREAD
+    Type: environment
+    Description "The minimum number of threads to use to answer the requests"
+  - Key: OPENSHIFT_PUMA_MAX_THREAD
+    Type: environment
+    Description "The maximum number of threads to use to answer the requests"
+  - Key: OPENSHIFT_PUMA_PORT
+    Type: environment
+    Description: "Internal port to which the web-framework binds to."
+  - Key: OPENSHIFT_PUMA_IP
+    Type: environment
+    Description: "Internal IP to which the web-framework binds to."
+Provides:
+  - puma-0.1
+  - puma
+Publishes:
+  publish-http-url:
+    Type: "NET_TCP:httpd-proxy-info"
+  publish-gear-endpoint:
+    Type: "NET_TCP:gear-endpoint-info"
+Subscribes:
+  set-env:
+    Type: "ENV:*"
+    Required: false
+Scaling:
+  Min: 1
+  Max: 1
+Group-Overrides:
+  - components:
+    - web-proxy
+Endpoints:
+  - Private-IP-Name:   IP
+    Private-Port-Name: PORT
+    Private-Port:      8080
+    Public-Port-Name:  PROXY_PORT
+    Mappings:
+      - Frontend:      ""
+        Backend:       ""
+        Options:       { websocket: true }

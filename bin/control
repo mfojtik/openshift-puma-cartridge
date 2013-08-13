@@ -1,0 +1,55 @@
+#!/bin/bash
+source $OPENSHIFT_CARTRIDGE_SDK_BASH
+
+function start() {
+    echo "Starting Puma cart"
+    ${OPENSHIFT_RUBY_DIR}/bin/control stop &> /dev/null
+    erb conf/puma.conf.erb > conf/puma.conf
+    puma --config "${OPENSHIFT_PUMA_DIR}/conf/puma.conf" &> ${OPENSHIFT_PUMA_DIR}/logs/boot.log
+    if [ "$?" == "0" ]; then
+      echo "Puma cartridge started succesfully"
+    else
+      echo "Unable to start Puma cartridge:"
+      cat ${OPENSHIFT_PUMA_DIR}/logs/boot.log
+    fi
+}
+
+function stop() {
+    echo "Stopping Puma cart"
+    pumactl --state "${OPENSHIFT_PUMA_DIR}/run/puma.state" stop
+}
+
+function restart() {
+    echo "Restarting Puma cart"
+    pumactl --state "${OPENSHIFT_PUMA_DIR}/run/puma.state" restart
+}
+
+function status() {
+   if output=$(curl http://$OPENSHIFT_PUMA_IP:$OPENSHIFT_PUMA_PORT 2>&1 )
+   then
+      client_result "Application is running"
+   else
+      client_result "Application is either stopped or inaccessible"
+   fi
+}
+
+function reload() {
+    client_result "Reloading Puma cart"
+    restart
+}
+
+function tidy() {
+  client_message "Emptying log dir: ${OPENSHIFT_PUMA_DIR}/logs"
+  shopt -s dotglob
+  rm -rf $OPENSHIFT_PUMA_DIR/logs/*
+}
+
+case "$1" in
+  start)     start ;;
+  stop)      stop ;;
+  restart)   restart ;;
+  status)    status ;;
+  reload)    reload ;;
+  tidy)      tidy ;;
+  *)         exit 0
+esac
