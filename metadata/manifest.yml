@@ -52,3 +52,4 @@ Endpoints:
       - Frontend:      ""
         Backend:       ""
         Options:       { websocket: true }
+Source-Url: git://github.com/mfojtik/openshift-puma-cartridge.git
