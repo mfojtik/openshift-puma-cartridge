@@ -9,7 +9,7 @@ esac
 
 mkdir -p $OPENSHIFT_PUMA_DIR/{logs,run,config}
 
-gem install puma --no-rdoc --no-ri --conservative &> ${OPENSHIFT_PUMA_DIR}/logs/install.log
+gem install puma --no-rdoc --no-ri --conservative
 
 if [ "$?" == "0" ]; then
   client_result "Puma cartridge succesfully installed."
