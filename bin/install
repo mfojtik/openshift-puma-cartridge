@@ -5,4 +5,5 @@ version="$1"
 
 shopt -s dotglob
 
+mkdir -p $OPENSHIFT_PUMA_DIR/template
 cp -r $OPENSHIFT_PUMA_DIR/versions/shared/template/* $OPENSHIFT_PUMA_DIR/template
