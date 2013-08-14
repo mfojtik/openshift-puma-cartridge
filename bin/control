@@ -3,8 +3,6 @@ source $OPENSHIFT_CARTRIDGE_SDK_BASH
 
 function start() {
     echo "Starting Puma cart"
-    # Stop the default HTTP server at this point
-    ${OPENSHIFT_RUBY_DIR}/bin/control stop &> /dev/null
     puma --config conf/puma.conf &> ${OPENSHIFT_PUMA_DIR}/logs/boot.log
     if [ "$?" == "0" ]; then
       echo "Puma cartridge started succesfully"
@@ -15,7 +13,6 @@ function start() {
 }
 
 function stop() {
-    check_state_file
     if [ ! -f ${OPENSHIFT_PUMA_DIR}/run/puma.state ]; then
       echo "Puma cartridge is not running, nothing to do..."
     else
