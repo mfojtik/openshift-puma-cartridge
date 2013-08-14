@@ -1,0 +1,8 @@
+#!/bin/bash -e
+
+source $OPENSHIFT_CARTRIDGE_SDK_BASH
+version="$1"
+
+shopt -s dotglob
+
+cp -r $OPENSHIFT_PUMA_DIR/versions/shared/template/* $OPENSHIFT_PUMA_DIR/template
