@@ -12,6 +12,7 @@ Website: http://puma.io
 Categories:
   - service
   - ruby
+  - web_framework
 
 Provides:
   - puma-0.1
@@ -45,5 +46,8 @@ Endpoints:
       - Frontend:      ""
         Backend:       ""
         Options:       { websocket: true }
+      - Frontend:      "/health"
+        Backend:       ""
+        Options:       { health: true }
 
 Source-Url: git://github.com/mfojtik/openshift-puma-cartridge.git
