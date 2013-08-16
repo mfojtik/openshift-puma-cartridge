@@ -12,7 +12,6 @@ Website: http://puma.io
 Categories:
   - service
   - ruby
-  - web_framework
 
 Provides:
   - puma-0.1
